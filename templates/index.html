@@ -1,0 +1,133 @@
+
+<!doctype html>
+<html>
+  <head>
+    <title>Google App Engine Flexible Environment - Python Websockets Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body style="background-color: #abb0ac">
+
+    <form action="Form.php" id="ResearchForm">
+      <fieldset>
+      <legend style="color : #0a0a0a; font-family: Helvetica, Arial; font-size : 34px; ">Research Proposal Status</legend>
+        <section id = "buttons">
+            <button type="button" id="AcceptedProposal" onclick="AcceptedProposals()" >Accepted</button>
+                <!-- Style button -->
+                <style>
+            /* CSS */
+                button[id=AcceptedProposal] {
+                  font-family: "Open Sans", sans-serif;
+                  font-size: 16px;
+                  width: 255px;
+                  height:40px;
+                  letter-spacing: 2px;
+                  text-decoration: none;
+                  text-transform: uppercase;
+                  color: #000;
+                  cursor: pointer;
+                  border: 3px solid;
+                  padding: 0.25em 0.5em;
+                  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+                  user-select: none;
+                  -webkit-user-select: none;
+                  touch-action: manipulation;
+                }
+        
+                button[id=create-room]:active {
+                  box-shadow: 0px 0px 0px 0px;
+                }
+        
+            @media (min-width: 768px) {
+              .button-54 {
+                padding: 0.25em 0.75em;
+              }
+            }
+                </style>
+            <button type="button" id="Buttons"   >Rejected</button>
+            <style>
+              /* CSS */
+                  button[id=Buttons] {
+                    font-family: "Open Sans", sans-serif;
+                    font-size: 16px;
+                    width: 255px;
+                    height:40px;
+                    letter-spacing: 2px;
+                    text-decoration: none;
+                    text-transform: uppercase;
+                    color: #000;
+                    cursor: pointer;
+                    border: 3px solid;
+                    padding: 0.25em 0.5em;
+                    box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+                    user-select: none;
+                    -webkit-user-select: none;
+                    touch-action: manipulation;
+                  }
+          
+                  button[id=create-room]:active {
+                    box-shadow: 0px 0px 0px 0px;
+                  }
+          
+              @media (min-width: 768px) {
+                .button-54 {
+                  padding: 0.25em 0.75em;
+                }
+              }
+                  </style>
+            <button type="button" id="Buttons" >Idle</button>
+            <button type="button" id="Buttons" >New Proposal</button>
+            <button type="button" id="Buttons" >Accounts added</button>
+
+        </section>
+        <div class = "ProposalsDisplayed" id="ProposalsDisplayed2">
+          <p>Proposal Title:</p>
+        </div>  
+        
+      </fieldset>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+    // [START gae_flex_websockets_js]
+    $(function() {
+      /* If the main page is served via https, the WebSocket must be served via
+         "wss" (WebSocket Secure) */
+      var scheme = window.location.protocol == "https:" ? 'wss://' : 'ws://';
+      var webSocketUri =  scheme
+                          + window.location.hostname
+                          + (location.port ? ':'+location.port: '')
+                          + '/chat';
+
+      /* Get elements from the page */
+      var button = $('#AcceptedProposal');
+      var divtmp = $('#ProposalsDisplayed2');
+
+
+      /* Establish the WebSocket connection and register event handlers. */
+      var websocket = new WebSocket(webSocketUri);
+
+      websocket.onopen = function() {
+      };
+
+      websocket.onclose = function() {
+      };
+
+      websocket.onmessage = function(e) {
+        divtmp.append($('<p>').text(e.data));
+      };
+
+      websocket.onerror = function(e) {
+        console.log(e);
+      };
+
+      /* Handle form submission and send a message to the websocket. */
+      button.click(function(e) {
+        e.preventDefault();
+        var data = "textarea.val()";
+        websocket.send(data);
+      });
+    });
+    // [END gae_flex_websockets_js]
+    </script>
+  </body>
+</html>
